@@ -1,0 +1,11 @@
+@import '../_design-tokens.scss';
+
+.instance-wrapper {
+  display: flex;
+  background-color: $color-background-alt;
+}
+
+.instance-label {
+  flex: 1;
+  color: $color-text-action-label;
+}
