@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Input, InputIcon } from '@salesforce/design-system-react';
+import { Input, InputIcon, DataTable, DataTableColumn } from '@salesforce/design-system-react';
 
 import Header from './components/Header';
-import InstanceLabel from './components/InstanceLabel';
 import './App.scss';
 
 const API_URL = 'http://trust1-acquisitions.herokuapp.com/api/status/v1/instances/status/preview';
@@ -24,6 +23,13 @@ const App = () => {
     setSearch(e.target.value);
   };
 
+  const columns = [
+    <DataTableColumn key="key" label="Key" property="key" />,
+    <DataTableColumn key="environment" label="Environment" property="environment" />,
+    <DataTableColumn key="location" label="Location" property="location" />,
+    <DataTableColumn key="releaseNumber" label="Release Number" property="releaseNumber" />,
+    <DataTableColumn key="status" label="Status" property="status" />,
+  ];
   return (
     <div className="App" data-testid="app">
       <Header userName="My Username" />
@@ -48,15 +54,12 @@ const App = () => {
             </div>
           </section>
           <section className="slds-grid slds-wrap slds-gutters slds-m-top_large">
-            {instanceList
-              .filter((item) => item.key.includes(search.toUpperCase()))
-              .map((instance) => {
-                return (
-                  <div key={instance.key} className="slds-col slds-size_1-of-5">
-                    <InstanceLabel label={instance.key} />
-                  </div>
-                );
-              })}
+            <DataTable
+              striped
+              items={instanceList.filter((item) => item.key.includes(search.toUpperCase())).slice(0, 10)}
+            >
+              {columns}
+            </DataTable>
           </section>
         </main>
       </div>
