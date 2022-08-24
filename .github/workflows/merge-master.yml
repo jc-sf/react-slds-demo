@@ -1,0 +1,30 @@
+name: Automatic deployments master
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-master-branch-with-staging:
+    name: Syncs master branch with staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: pull-request
+        id: open-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: 'staging' # If blank, default: triggered branch
+          destination_branch: 'master' # If blank, default: master
+          pr_title: 'Merge staging into master' # Title of pull request
+          pr_body: ':crown: *An automated PR*' # Full markdown support, requires pr_title to be set
+          pr_reviewer: 'jc-sf' # Comma-separated list (no spaces)
+          pr_assignee: 'jc-sf' # Comma-separated list (no spaces)
+          pr_label: 'prod-release' # Comma-separated list (no spaces)
+          pr_draft: false # Creates pull request as draft
+          pr_allow_empty: false # Creates pull request even if there are no changes
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: output-url
+        run: echo ${{steps.open-pr.outputs.pr_url}}
+      - name: output-number
+        run: echo ${{steps.open-pr.outputs.pr_number}}
+      - name: output-has-changed-files
+        run: echo ${{steps.open-pr.outputs.has_changed_files}}
