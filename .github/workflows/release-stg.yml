@@ -7,7 +7,10 @@ jobs:
     name: Syncs staging branch with dev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: 'staging'
       - name: pull-request
         id: open-pr
         uses: repo-sync/pull-request@v2
