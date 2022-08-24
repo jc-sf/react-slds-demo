@@ -1,0 +1,19 @@
+name: Automatic deployments from dev to staging
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-staging-branch-with-dev:
+    name: Syncs staging branch with dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the staging branch
+        uses: actions/checkout@v3
+        with:
+          ref: 'staging'
+
+      - name: Update staging branch with new comments from the dev branch
+        run: |
+          git fetch
+          git pull origin dev
+          git push origin staging
