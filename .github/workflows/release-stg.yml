@@ -7,14 +7,17 @@ jobs:
     name: Syncs staging branch with dev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: 'staging'
       - name: pull-request
         id: open-pr
         uses: repo-sync/pull-request@v2
         with:
           source_branch: 'dev' # If blank, default: triggered branch
           destination_branch: 'staging' # If blank, default: master
-          pr_title: 'Merge dev into staging' # Title of pull request
+          pr_title: 'chore: merge dev into staging' # Title of pull request
           pr_body: ':crown: *An automated PR*' # Full markdown support, requires pr_title to be set
           pr_reviewer: 'jc-sf' # Comma-separated list (no spaces)
           pr_assignee: 'jc-sf' # Comma-separated list (no spaces)
